@@ -10,7 +10,7 @@ Reinicie o Sublime e, abra o Command Palette, digite "Install Package", baixe os
 
 - **`Terminus`**: Terminal integrado.
 - **`Markdown Preview`**: Visualizador de arquivos `.md` no navegador.
-- **`A File Icon`**: Decorador de **ícones** para a barra lateral, que atribui ícones específicos (py, txt, md, etc) a cada tipo de arquivo.
+- **`A File Icon`**: Decorador de **ícones** para a barra lateral.
 
 ## 2. Configurar Atalhos (Key Bindings)
 
@@ -38,3 +38,4 @@ Vá em `Preferences > Key Bindings` e cole este código no painel da **direita**
 
 **Explicação:**  
 Define `Alt+Shift+T` para abrir o terminal e `Ctrl+Alt+V` para visualizar Markdown (não tem conflitos com atalhos nativos).
+
