@@ -4,7 +4,7 @@
 
 Na raiz do seu projeto, rode:
 ```bash
-python -m venv .venv
+python3 -m venv .venv
 ```
 
 **Explicação:**  
@@ -16,7 +16,7 @@ Cria uma nova pasta chamada `.venv` dentro do seu projeto, contendo uma cópia i
 Para usar o `.venv` você deve ativá-lo.
 
 ```bash
-.\.venv\Scripts\activate
+source .venv/bin/activate
 ```
 
 **Explicação:**  
@@ -25,7 +25,7 @@ Depois desse comando o Python usado será o Python dentro da pasta .venv e não 
 
 Após a ativação, o nome do ambiente, `(.venv)`, deve aparecer no início da linha de comando, indicando que ele está ativo:
 ```bash
-(.venv) PS C:\Users\...
+(.venv) user@hostname:~/projeto$
 ```
 
 ## 3. Configurar o Ambiente Virtual
@@ -63,7 +63,7 @@ deactivate
 
 - Excluir o `.venv`:
 ```bash
-rmdir /s /q .venv
+rm -rf .venv
 ```
 
 - Salvar quais pacotes extras foram instalados:
