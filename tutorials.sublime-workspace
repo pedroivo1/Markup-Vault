@@ -15,6 +15,85 @@
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
+		},
+		{
+			"file": "Python/pandas.md",
+			"settings":
+			{
+				"buffer_size": 589,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "Python/Ambiente Virtual Python (venv) - Guia Rápido.md",
+			"settings":
+			{
+				"buffer_size": 1846,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			},
+			"undo_stack":
+			[
+				[
+					24,
+					2,
+					"left_delete",
+					null,
+					"AgAAAJMCAAAAAAAAkwIAAAAAAAABAAAAOpICAAAAAAAAkgIAAAAAAAABAAAAQw",
+					"AQAAAAAAAAABAAAAlAIAAAAAAACUAgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					26,
+					1,
+					"left_delete",
+					null,
+					"AQAAAJcCAAAAAAAAlwIAAAAAAAABAAAAcw",
+					"AQAAAAAAAAABAAAAmAIAAAAAAACYAgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					62,
+					1,
+					"",
+					null,
+					"AQAAAIgCAAAAAAAAqAIAAAAAAAATAAAALnZlbnYpIFBTIFxVc2VyXC4uLg",
+					"AQAAAAAAAAABAAAAiAIAAAAAAACbAgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					67,
+					1,
+					"left_delete",
+					null,
+					"AQAAAIgCAAAAAAAAiAIAAAAAAAABAAAAKA",
+					"AQAAAAAAAAABAAAAiQIAAAAAAACJAgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					73,
+					1,
+					"",
+					null,
+					"AQAAAMcGAAAAAAAA0wYAAAAAAAARAAAAcm1kaXIgL3MgL3EgLnZlbnY",
+					"AQAAAAAAAAABAAAAxwYAAAAAAADYBgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					107,
+					1,
+					"insert",
+					{
+						"characters": "\n"
+					},
+					"AQAAADYHAAAAAAAANwcAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAANgcAAAAAAAA2BwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					113,
+					1,
+					"left_delete",
+					null,
+					"AQAAADYHAAAAAAAANgcAAAAAAAABAAAACg",
+					"AQAAAAAAAAABAAAANwcAAAAAAAA3BwAAAAAAAAAAAAAAAPC/"
+				]
+			]
 		}
 	],
 	"build_system": "",
@@ -86,7 +165,7 @@
 	],
 	"find":
 	{
-		"height": 38.0
+		"height": 26.0
 	},
 	"find_in_files":
 	{
@@ -126,7 +205,6 @@
 				{
 					"buffer": 0,
 					"file": "tutorials.sublime-project",
-					"selected": true,
 					"semi_transient": false,
 					"settings":
 					{
@@ -146,6 +224,65 @@
 							"syntax": "Packages/JSON/JSON.sublime-syntax",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"stack_multiselect": false,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "Python/pandas.md",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 589,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Markdown/Markdown.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"stack_multiselect": false,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "Python/Ambiente Virtual Python (venv) - Guia Rápido.md",
+					"selected": true,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1846,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								514,
+								514
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Markdown/Markdown.sublime-syntax"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -234,7 +371,7 @@
 		[
 			[
 				"",
-				"~/Documents/github/ffmpeg_engine/pympeg.sublime-project"
+				"~/Documents/github/Py-Lab/p.sublime-project"
 			]
 		],
 		"width": 380.0
@@ -256,7 +393,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 377.0,
+	"side_bar_width": 250.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
