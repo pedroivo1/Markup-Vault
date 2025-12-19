@@ -18,12 +18,26 @@
 		},
 		{
 			"file": "Python/pandas.md",
+			"redo_stack":
+			[
+				[
+					14,
+					1,
+					"",
+					null,
+					"AQAAAIgBAAAAAAAAiAEAAAAAAAAGAAAAbGltcG8K",
+					"AQAAAAAAAAABAAAAjgEAAAAAAACOAQAAAAAAAAAAAAAAAPC/"
+				]
+			],
 			"settings":
 			{
-				"buffer_size": 589,
+				"buffer_size": 3332,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
-			}
+			},
+			"undo_stack":
+			[
+			]
 		},
 		{
 			"file": "Python/Ambiente Virtual Python (venv) - Guia Rápido.md",
@@ -41,7 +55,7 @@
 					"left_delete",
 					null,
 					"AgAAAJMCAAAAAAAAkwIAAAAAAAABAAAAOpICAAAAAAAAkgIAAAAAAAABAAAAQw",
-					"AQAAAAAAAAABAAAAlAIAAAAAAACUAgAAAAAAAAAAAAAAAPC/"
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAACUAgAAAAAAAJQCAAAAAAAAAAAAAAAA8L8"
 				],
 				[
 					26,
@@ -49,7 +63,7 @@
 					"left_delete",
 					null,
 					"AQAAAJcCAAAAAAAAlwIAAAAAAAABAAAAcw",
-					"AQAAAAAAAAABAAAAmAIAAAAAAACYAgAAAAAAAAAAAAAAAPC/"
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAACYAgAAAAAAAJgCAAAAAAAAAAAAAAAA8L8"
 				],
 				[
 					62,
@@ -57,7 +71,7 @@
 					"",
 					null,
 					"AQAAAIgCAAAAAAAAqAIAAAAAAAATAAAALnZlbnYpIFBTIFxVc2VyXC4uLg",
-					"AQAAAAAAAAABAAAAiAIAAAAAAACbAgAAAAAAAAAAAAAAAPC/"
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAACIAgAAAAAAAJsCAAAAAAAAAAAAAAAA8L8"
 				],
 				[
 					67,
@@ -65,7 +79,7 @@
 					"left_delete",
 					null,
 					"AQAAAIgCAAAAAAAAiAIAAAAAAAABAAAAKA",
-					"AQAAAAAAAAABAAAAiQIAAAAAAACJAgAAAAAAAAAAAAAAAPC/"
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAACJAgAAAAAAAIkCAAAAAAAAAAAAAAAA8L8"
 				],
 				[
 					73,
@@ -73,7 +87,7 @@
 					"",
 					null,
 					"AQAAAMcGAAAAAAAA0wYAAAAAAAARAAAAcm1kaXIgL3MgL3EgLnZlbnY",
-					"AQAAAAAAAAABAAAAxwYAAAAAAADYBgAAAAAAAAAAAAAAAPC/"
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAADHBgAAAAAAANgGAAAAAAAAAAAAAAAA8L8"
 				],
 				[
 					107,
@@ -83,7 +97,7 @@
 						"characters": "\n"
 					},
 					"AQAAADYHAAAAAAAANwcAAAAAAAAAAAAA",
-					"AQAAAAAAAAABAAAANgcAAAAAAAA2BwAAAAAAAAAAAAAAAPC/"
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAA2BwAAAAAAADYHAAAAAAAAAAAAAAAA8L8"
 				],
 				[
 					113,
@@ -91,7 +105,7 @@
 					"left_delete",
 					null,
 					"AQAAADYHAAAAAAAANgcAAAAAAAABAAAACg",
-					"AQAAAAAAAAABAAAANwcAAAAAAAA3BwAAAAAAAAAAAAAAAPC/"
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAA3BwAAAAAAADcHAAAAAAAAAAAAAAAA8L8"
 				]
 			]
 		}
@@ -165,7 +179,7 @@
 	],
 	"find":
 	{
-		"height": 26.0
+		"height": 38.0
 	},
 	"find_in_files":
 	{
@@ -205,6 +219,7 @@
 				{
 					"buffer": 0,
 					"file": "tutorials.sublime-project",
+					"selected": true,
 					"semi_transient": false,
 					"settings":
 					{
@@ -229,7 +244,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 0,
 					"stack_multiselect": false,
 					"type": "text"
 				},
@@ -239,20 +254,22 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 589,
+						"buffer_size": 3332,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								392,
+								392
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Markdown/Markdown.sublime-syntax"
+							"syntax": "Packages/Markdown/Markdown.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -265,7 +282,6 @@
 				{
 					"buffer": 2,
 					"file": "Python/Ambiente Virtual Python (venv) - Guia Rápido.md",
-					"selected": true,
 					"semi_transient": false,
 					"settings":
 					{
@@ -288,7 +304,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 2,
 					"stack_multiselect": false,
 					"type": "text"
 				}
@@ -371,7 +387,7 @@
 		[
 			[
 				"",
-				"~/Documents/github/Py-Lab/p.sublime-project"
+				"~/Documents/github/Py-Lab/p.sublime-workspace"
 			]
 		],
 		"width": 380.0
