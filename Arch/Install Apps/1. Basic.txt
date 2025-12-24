@@ -1,0 +1,20 @@
+# --- Update & Base Tools ---
+sudo pacman -Syu --needed git flatpak fastfetch
+
+# --- Configure Flathub ---
+flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+
+# --- Install Yay (AUR Helper) ---
+git clone https://aur.archlinux.org/yay.git
+cd yay
+makepkg -si
+cd ..
+rm -rf yay
+
+# --- Install Interface Base ---
+yay -S --noconfirm hyprland kitty ttf-jetbrains-mono-nerd
+
+# --- Install Browser (Flatpak) ---
+flatpak install flathub com.brave.Browser -y
+
+reboot

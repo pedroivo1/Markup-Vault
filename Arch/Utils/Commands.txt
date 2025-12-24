@@ -1,0 +1,22 @@
+# --- Battery ---
+upower -i /org/freedesktop/UPower/devices/battery_BAT0
+echo "\nCarga: $(cat /sys/class/power_supply/BAT0/capacity)% \n Status: $(cat /sys/class/power_supply/BAT0/status)"
+echo "Status: $(cat /sys/class/power_supply/BAT0/status)"
+echo "Carga: $(cat /sys/class/power_supply/BAT0/capacity)%"
+watch -n 1 "cat /sys/class/power_supply/BAT0/status && cat /sys/class/power_supply/BAT0/capacity"
+
+# --- Flatpak ---
+flatpak update
+flatpak uninstall --unused
+flatpak list
+
+# --- Hyprland ---
+hyprctl reload
+hyprctl clients
+hyprctl monitors all
+
+# --- Update System ---
+sudo pacman -Sy archlinux-keyring
+sudo pacman -Su
+yay -Sua --noconfirm
+flatpak update -y

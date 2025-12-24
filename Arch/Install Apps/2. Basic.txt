@@ -1,0 +1,34 @@
+# --- Audio Drivers & Firmware ---
+sudo pacman -S pipewire pipewire-alsa pipewire-jack pipewire-pulse \
+wireplumber sof-firmware alsa-ucm-conf alsa-utils
+
+# --- Intel Video Drivers ---
+sudo pacman -S mesa lib32-mesa vulkan-intel lib32-vulkan-intel \
+intel-media-driver libva-utils vulkan-tools
+
+# --- Multimedia Codecs ---
+sudo pacman -S gstreamer gst-libav gst-plugins-base gst-plugins-good \
+gst-plugins-bad gst-plugins-ugly ffmpeg
+
+# --- Hyprland Ecosystem ---
+sudo pacman -S hyprlock hypridle hyprcursor hyprpaper hyprpicker \
+waybar rofi-wayland xdg-desktop-portal-hyprland xdg-desktop-portal-gtk \
+dunst wl-clipboard polkit-kde-agent qt5-wayland qt6-wayland xdg-user-dirs-gtk
+xdg-user-dirs-update
+
+# --- File Manager & Utilities ---
+sudo pacman -S dolphin dolphin-plugins ark kio-admin mpv pavucontrol
+
+# --- Additional Fonts ---
+sudo pacman -S ttf-font-awesome ttf-opensans noto-fonts ttf-droid ttf-roboto
+
+# --- AUR Utilities ---
+yay -S --noconfirm hyprshot wlogout qview
+
+# --- VSCode ---
+flatpak install flathub com.visualstudio.code -y
+
+# --- Enable Audio Services ---
+systemctl --user enable --now pipewire pipewire-pulse wireplumber
+
+reboot

@@ -1,0 +1,99 @@
+# --- Wi-Fi Setup ---
+iwctl
+   device list
+   station wlan0 scan
+   station wlan0 get-networks
+   station wlan0 connect MARIA_5G
+   exit
+
+# --- Disk Partitioning ---
+lsblk
+cfdisk /dev/nvme0n1
+   # make the partitions
+
+# --- Filesystem Formatting ---
+mkfs.fat -F32 /dev/nvme0n1p1
+mkfs.ext4 /dev/nvme0n1p2
+mkfs.ext4 /dev/nvme0n1p3
+
+# --- Mount Filesystems ---
+mount /dev/nvme0n1p3 /mnt
+mkdir /mnt/home
+mkdir -p /mnt/boot/efi
+mount /dev/nvme0n1p2 /mnt/home
+mount /dev/nvme0n1p1 /mnt/boot/efi
+lsblk
+
+# --- Mirrorlist Configuration ---
+pacman -Sy reflector
+reflector --country Brazil --latest 10 --sort rate --verbose --save /etc/pacman.d/mirrorlist
+nano /etc/pacman.d/mirrorlist
+   # add (above others Servers)
+   Server = https://mirror.osbeck.com/archlinux/$repo/os/$arch
+pacman -Sy
+
+# --- Base System Installation ---
+pacstrap /mnt base base-devel linux linux-headers linux-firmware nano intel-ucode
+
+# --- Generate Fstab ---
+genfstab -U /mnt >> /mnt/etc/fstab
+cat /mnt/etc/fstab
+
+# --- Chroot & Pacman Config ---
+arch-chroot /mnt
+nano /etc/pacman.conf
+   # Enable: Color, ParallelDownloads, [multilib]
+
+# --- Timezone & Clock ---
+ln -sf /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime
+hwclock --systohc
+
+# --- Locale & Keymap ---
+echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
+locale-gen
+echo "LANG=en_US.UTF-8" > /etc/locale.conf
+echo "KEYMAP=us" > /etc/vconsole.conf
+
+# --- Network Identification ---
+echo "DESKTOP-OAR8HS76" > /etc/hostname
+nano /etc/hosts
+    # add
+   127.0.0.1		localhost
+   ::1			    localhost
+   127.0.1.1		DESKTOP-OAR8HS76.localdomain	DESKTOP-OAR8HS76
+
+# --- Root Password ---
+passwd
+
+# --- Sudoers Configuration ---
+EDITOR=nano visudo
+   # Uncomment: %wheel ALL=(ALL:ALL) ALL
+
+# --- User Creation ---
+useradd -mG wheel pedro
+passwd pedro
+
+# --- Additional Packages ---
+pacman -S dosfstools mtools os-prober networkmanager iwd grub efibootmgr
+
+# --- Bootloader Installation ---
+grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB --recheck
+
+# --- Bootloader Config ---
+nano /etc/default/grub
+   # uncomment: "GRUB_DISABLE_OS_PROBER=false"
+grub-mkconfig -o /boot/grub/grub.cfg
+
+# --- Network Services ---
+systemctl enable NetworkManager
+
+# --- NetworkManager Backend (IWD) ---
+nano /etc/NetworkManager/NetworkManager.conf
+   # add
+   [device]
+   wifi.backend=iwd
+
+# --- Finalize ---
+exit
+umount -R /mnt
+reboot
