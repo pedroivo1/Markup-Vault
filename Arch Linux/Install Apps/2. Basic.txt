@@ -1,10 +1,22 @@
-# --- Audio Drivers & Firmware ---
-sudo pacman -S pipewire pipewire-alsa pipewire-jack pipewire-pulse \
-wireplumber sof-firmware alsa-ucm-conf alsa-utils
+# --- Alienware Drivers ---
+# --- Ventoinha ---
+yay -S i8kutils-git dell-bios-fan-control-git
+echo "options dell-smm-hwmon restricted=0 force=1" | sudo tee /etc/modprobe.d/dell-smm-hwmon.conf
+echo "dell-smm-hwmon" | sudo tee /etc/modules-load.d/dell-smm-hwmon.conf
+# --- Keyboard (RGB - Solução OpenRGB) ---
+sudo pacman -S --noconfirm openrgb i2c-tools
+echo "i2c-dev" | sudo tee /etc/modules-load.d/i2c-dev.conf
+
+# Atualiza as regras de permissão USB agora (pra garantir)
+sudo udevadm control --reload-rules && sudo udevadm trigger
 
 # --- Intel Video Drivers ---
 sudo pacman -S mesa lib32-mesa vulkan-intel lib32-vulkan-intel \
 intel-media-driver libva-utils vulkan-tools
+
+# --- Audio Drivers & Firmware ---
+sudo pacman -S pipewire pipewire-alsa pipewire-jack pipewire-pulse \
+wireplumber sof-firmware alsa-ucm-conf alsa-utils
 
 # --- Multimedia Codecs ---
 sudo pacman -S gstreamer gst-libav gst-plugins-base gst-plugins-good \
