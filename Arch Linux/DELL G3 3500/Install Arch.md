@@ -1,6 +1,8 @@
-# Instalação Arch Linux - Dell G3 3500
+# Arch Linux Installation
 
-## 1. Wi-Fi Setup
+## 1. Connection
+
+### Wi-Fi Setup
 Connecting to the internet via `iwctl`
 
 ```bash
@@ -8,11 +10,11 @@ iwctl
     device list
     station wlan0 scan
     station wlan0 get-networks
-    station wlan0 connect <wifi-name> # e.g. MARIA_5G
+    station wlan0 connect <wifi> # e.g. MARIA_5G
     exit
 ```
 
-## 2. Prepare Disk and Mounting
+## 2. Disk
 
 ### Disk Partitioning
 Preparing the NVMe disk
@@ -20,16 +22,18 @@ Preparing the NVMe disk
 ```bash
 lsblk
 cfdisk /dev/<disk> # e.g. nvme0n1
-    # Create the partitions here
+    # Create partitions
+    # Write
+    # Quit
 ```
 
 ### Filesystem Formatting
 Formatting the partitions (EFI, Root, Home)
 
 ```bash
-mkfs.fat -F32 /dev/<partition> # e.g. nvme0n1p1 (EFI)
-mkfs.ext4 /dev/<partition> # e.g. nvme0n1p2 (Root/Home)
-mkfs.ext4 /dev/<partition> # e.g. nvme0n1p3 (Root/Home)
+mkfs.fat -F32 /dev/<partition> # e.g. nvme0n1p1
+mkfs.ext4 /dev/<partition> # e.g. nvme0n1p2
+mkfs.ext4 /dev/<partition> # e.g. nvme0n1p3
 ```
 
 ### Mount Filesystems
@@ -44,7 +48,7 @@ mount /dev/<partition> /mnt/boot/efi # boot
 lsblk
 ```
 
-## 3. Install Base System
+## 3. Installation
 
 ### Mirrorlist Configuration
 Updating and prioritizing Brazilian mirrors
@@ -57,9 +61,9 @@ reflector --country Brazil --latest 10 --sort rate --verbose --save /etc/pacman.
 Manually edit the list:
 ```bash
 nano /etc/pacman.d/mirrorlist
+    # Add (above other Servers):
+    # `Server = https://mirror.osbeck.com/archlinux/$repo/os/$arch`
 ```
-> **Add (above other Servers):**
-> `Server = https://mirror.osbeck.com/archlinux/$repo/os/$arch`
 
 Update repositories:
 ```bash
@@ -73,15 +77,15 @@ Installing the base system, kernel, and firmware (including Intel microcode).
 pacstrap /mnt base base-devel linux linux-headers linux-firmware nano intel-ucode
 ```
 
-### Generate Fstab
+### Filesystem Table
 Generating the fstab file.
 
 ```bash
-genfstab -U /mnt >> /mnt/etc/fstab
+genfstab -U /mnt > /mnt/etc/fstab
 cat /mnt/etc/fstab
 ```
 
-## 4. Configure System (Chroot)
+## 4. Configuration
 
 ### Chroot & Pacman Config
 Accessing the installed system.
@@ -93,7 +97,7 @@ arch-chroot /mnt
 Edit Pacman configurations:
 ```bash
 nano /etc/pacman.conf
-# Enable: Color, ParallelDownloads, [multilib]
+    # Uncomment: Color, ParallelDownloads, [multilib]
 ```
 
 ### Timezone & Clock
@@ -118,34 +122,26 @@ echo "KEYMAP=us" > /etc/vconsole.conf
 Defining hostname and hosts.
 
 ```bash
-echo "DESKTOP-OAR8HS76" > /etc/hostname
+echo "<device>" > /etc/hostname
 nano /etc/hosts
+    # Add
+    # 127.0.0.1      localhost
+    # ::1            localhost
+    # 127.0.1.1      <device>.localdomain <device>
 ```
-> **Add:**
-> ```text
-> 127.0.0.1      localhost
-> ::1            localhost
-> 127.0.1.1      DESKTOP-OAR8HS76.localdomain DESKTOP-OAR8HS76
-> ```
 
 ### Root Password & User
-Setting passwords and creating user `pedro`.
-
 ```bash
 passwd
-# Set root password
 
 EDITOR=nano visudo
-# Uncomment: %wheel ALL=(ALL:ALL) ALL
+    # Uncomment: %wheel ALL=(ALL:ALL) ALL
 
-useradd -mG wheel pedro
-passwd pedro
-# Set user password
+useradd -mG wheel <user>
+passwd <user>
 ```
 
 ### Additional Packages & Bootloader
-Installing essential packages and GRUB.
-
 ```bash
 pacman -S dosfstools mtools os-prober networkmanager iwd grub efibootmgr
 
@@ -153,32 +149,24 @@ grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB 
 ```
 
 ### Bootloader Config
-Configuring GRUB to detect other OS.
-
 ```bash
 nano /etc/default/grub
-# Uncomment: "GRUB_DISABLE_OS_PROBER=false"
+    # Uncomment: "GRUB_DISABLE_OS_PROBER=false" (Lastline)
 
 grub-mkconfig -o /boot/grub/grub.cfg
 ```
 
 ### Network Configuration
-Enabling NetworkManager with IWD backend.
-
 ```bash
 systemctl enable NetworkManager
 
 nano /etc/NetworkManager/NetworkManager.conf
+    # Add:
+    # [device]
+    # wifi.backend=iwd
 ```
-> **Add:**
-> ```ini
-> [device]
-> wifi.backend=iwd
-> ```
 
 ### Finalize
-Exiting and rebooting.
-
 ```bash
 exit
 umount -R /mnt

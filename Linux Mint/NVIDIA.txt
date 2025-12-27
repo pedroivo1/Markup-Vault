@@ -1,0 +1,45 @@
+# 1
+sudo nano /etc/default/grub
+GRUB_CMDLINE_LINUX_DEFAULT="quiet splash nouveau.modeset=0 nvidia-drm.modeset=0 module_blacklist=nvidia,nouveau"
+sudo update-grub
+
+# 2
+sudo apt update
+sudo apt install acpi-call-dkms
+wget http://people.skolelinux.org/~pere/blog/turn_off_gpu.sh
+chmod +x turn_off_gpu.sh
+sudo ./turn_off_gpu.sh
+
+
+(#!/bin/bash
+# Tenta achar o método ACPI para desligar a GPU dedicada
+
+if ! lsmod | grep -q acpi_call; then
+    echo "Erro: modulo acpi_call nao carregado. Rode: sudo modprobe acpi_call"
+    exit 1
+fi
+
+methods="
+\_SB.PCI0.P0P1.VGA._OFF
+\_SB.PCI0.P0P2.VGA._OFF
+\_SB_.PCI0.OVGA.ATPX
+\_SB_.PCI0.OVGA.XTPX
+\_SB.PCI0.P0P3.PEGP._OFF
+\_SB.PCI0.P0P2.PEGP._OFF
+\_SB.PCI0.P0P1.PEGP._OFF
+\_SB.PCI0.PEG0.PEGP._OFF
+\_SB.PCI0.PEG1.PEGP._OFF
+\_SB.PCI0.PEG2.PEGP._OFF
+\_SB.PCI0.PEG3.PEGP._OFF
+"
+
+for m in $methods; do
+    echo -n "Trying $m: "
+    echo $m > /proc/acpi/call
+    result=$(cat /proc/acpi/call)
+    if [ "$result" = "Error: AE_NOT_FOUND" ]; then
+        echo "failed (not found)"
+    else
+        echo "works!"
+    fi
+done)
