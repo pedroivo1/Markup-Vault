@@ -14,6 +14,13 @@ sudo udevadm control --reload-rules && sudo udevadm trigger
 sudo pacman -S mesa lib32-mesa vulkan-intel lib32-vulkan-intel \
 intel-media-driver libva-utils vulkan-tools
 
+# --- Install Yay (AUR Helper) ---
+git clone https://aur.archlinux.org/yay.git
+cd yay
+makepkg -si
+cd ..
+rm -rf yay
+
 # --- Audio Drivers & Firmware ---
 sudo pacman -S pipewire pipewire-alsa pipewire-jack pipewire-pulse \
 wireplumber sof-firmware alsa-ucm-conf alsa-utils
@@ -35,7 +42,7 @@ sudo pacman -S dolphin dolphin-plugins ark kio-admin mpv pavucontrol
 sudo pacman -S ttf-font-awesome ttf-opensans noto-fonts ttf-droid ttf-roboto
 
 # --- AUR Utilities ---
-yay -S --noconfirm hyprshot wlogout qview
+yay -S --noconfirm hyprshot wlogout qview ttf-jetbrains-mono-nerd
 
 # --- VSCode ---
 flatpak install flathub com.visualstudio.code -y
