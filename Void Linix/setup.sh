@@ -60,6 +60,8 @@ xbps-install -y curl
 xbps-install -y git
 xbps-install -y alacritty
 xbps-install -y zathura
+xbps-install -y xclip
+xbps-install -y gnupg
 
 # USER APPLICATIONS
 xbps-install -y mousepad
