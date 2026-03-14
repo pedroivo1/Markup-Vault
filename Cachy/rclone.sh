@@ -15,7 +15,7 @@ After=network-online.target
 [Service]
 Type=simple
 ExecStart=/usr/bin/rclone mount gdrive: %h/GoogleDrive --vfs-cache-mode full
-ExecStop=/usr/bin/fusermount -u %h/GoogleDrive
+ExecStop=/usr/bin/fusermount3 -u %h/GoogleDrive
 Restart=on-failure
 
 [Install]

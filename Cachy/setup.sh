@@ -2,11 +2,6 @@
 
 pacman -Syu --noconfirm
 
-# Network Configuration (BR)
-sed -i 's/#WIRELESS_REGDOM="BR"/WIRELESS_REGDOM="BR"/' /etc/conf.d/wireless-regdom
-iw reg set BR
-iw reg get
-
 # Battery Configuration
 cat <<EOF > /etc/systemd/system/battery-charge-threshold.service
 [Unit]
@@ -23,3 +18,7 @@ EOF
 
 systemctl daemon-reload
 systemctl enable --now battery-charge-threshold.service
+
+# Git Configuration
+git config --global user.email "pedroivoal1@gmail.com"
+git config --global user.name "pedroivo1"
