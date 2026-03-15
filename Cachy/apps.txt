@@ -1,0 +1,15 @@
+brave-bin
+
+bitwarden
+
+htop
+stress-ng
+
+freedownloadmanager
+
+obs-studio
+
+libreoffice-still
+libreoffice-still-pt-br
+
+rclone

@@ -1,11 +1,9 @@
 #!/bin/sh
 
-pacman -Syu --noconfirm
-
 # Battery Configuration
 cat <<EOF > /etc/systemd/system/battery-charge-threshold.service
 [Unit]
-Description=Estabelece o limite maximo de carga da bateria em 80%
+Description=Sets the maximum battery charge threshold to 80%
 After=multi-user.target
 
 [Service]
