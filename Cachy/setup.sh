@@ -50,3 +50,30 @@ cat <<EOF >> ~/.config/fish/config.fish
 function fish_greeting
 end
 EOF
+
+
+# ----------------------
+# --- Symbolic Links ---
+# ----------------------
+
+# Claim ownership of the external drive
+sudo chown -R $USER:$USER /mnt/data
+
+# Define the core directories
+FOLDERS=("Documents" "Downloads" "Music" "Pictures" "Videos")
+
+for folder in "${FOLDERS[@]}"; do
+    # 1. Create the permanent matrix on the data drive
+    mkdir -p "/mnt/data/$folder"
+
+    # 2. Safely handle existing default system folders
+    if [ -d "$HOME/$folder" ] && [ ! -L "$HOME/$folder" ]; then
+        # rmdir is a safety lock: it will only delete the folder if it is 100% empty.
+        # If you have files there, it will leave them alone and print an error.
+        rmdir "$HOME/$folder" 2>/dev/null
+    fi
+
+    # 3. Establish or update the portal safely
+    # (-sfn forces the link and prevents nesting inside existing links)
+    ln -sfn "/mnt/data/$folder" "$HOME/$folder"
+done

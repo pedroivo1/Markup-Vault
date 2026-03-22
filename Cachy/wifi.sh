@@ -22,14 +22,35 @@ sudo systemctl enable --now iwd
 # 5. Suppression of the IPv6 protocol to stabilize Realtek hardware (Failure containment)
 echo -e "[connection]\nipv6.method=disabled" | sudo tee /etc/NetworkManager/conf.d/disable-ipv6.conf
 
-# 6. Forcing high-performance global DNS (Cloudflare) to resolve route bottlenecks
-echo -e "[global-dns-domain-*]\nservers=1.1.1.1,1.0.0.1" | sudo tee /etc/NetworkManager/conf.d/dns-servers.conf
-sudo systemctl restart NetworkManager
-
-# 7. Rate Arch Linux mirrors around wolrd
+# 6. Rate Arch Linux mirrors around wolrd
 # Warming Realtek so it doesn't break when cachyos-rate-mirrors is executed
 ping -i 0.2 1.1.1.1 > /dev/null 2>&1 &
 PING_PID=$!
 sleep 1
 sudo cachyos-rate-mirrors
 kill $PING_PID
+
+# ----------------------------------------
+# --- 7. Regulatory Domain Unlock (BR) ---
+# ----------------------------------------
+# Unlocks maximum antenna transmission power and local 5GHz channels
+sudo sed -i '/^WIRELESS_REGDOM=/d' /etc/conf.d/wireless-regdom
+echo 'WIRELESS_REGDOM="BR"' | sudo tee -a /etc/conf.d/wireless-regdom > /dev/null
+sudo iw reg set BR
+
+
+# ----------------------------------------------
+# --- 8. AMD Processor Memory Bypass (IOMMU) ---
+# ----------------------------------------------
+# Prevents AMD-Vi from blocking the Realtek adapter's memory access
+if ! grep -q "iommu=pt" /etc/kernel/cmdline; then
+    echo "Injecting IOMMU Passthrough rule into Kernel command line..."
+    # Appends the rule safely to the end of the configuration line
+    sudo sed -i 's/$/ iommu=pt/' /etc/kernel/cmdline
+
+    # Rebuilds the system image and updates the bootloader to read the new rule
+    sudo mkinitcpio -P
+    sudo limine-update
+else
+    echo "IOMMU Passthrough is already configured."
+fi
