@@ -2,25 +2,28 @@
 
 ## Sys
 
-exec:
+run:
 ```bash
-sudo setup-kde.sh
+chmod +x *.sh
+sudo setup.sh
 ```
 
 ## Apps
 
-### rclone
-```bash
-sudo rclone.sh
+### fish
+
+run:
+```sh
+nano ~/.config/fish/config.fish
 ```
 
-```bash
-Keep this "gdrive" remote? y
-Current remotes: q
-```
+past this content:
+```sh
+source /usr/share/cachyos-fish-config/cachyos-config.fish
 
-### Kate
+# overwrite greeting
+# potentially disabling fastfetch
+function fish_greeting
 
-```bash
-sudo pacman -S markdownpart
+end
 ```

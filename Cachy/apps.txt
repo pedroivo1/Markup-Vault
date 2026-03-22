@@ -1,15 +1,11 @@
 brave-bin
 
 bitwarden
-
-htop
-stress-ng
-
-freedownloadmanager
-
-obs-studio
+wl-clipboard
 
 libreoffice-still
 libreoffice-still-pt-br
 
-rclone
+kio-admin
+kcalc
+okular

@@ -1,6 +1,8 @@
 #!/bin/sh
 
-# Battery Configuration
+# -----------------------------
+# --- Battery Configuration ---
+# -----------------------------
 cat <<EOF > /etc/systemd/system/battery-charge-threshold.service
 [Unit]
 Description=Sets the maximum battery charge threshold to 80%
@@ -17,6 +19,18 @@ EOF
 systemctl daemon-reload
 systemctl enable --now battery-charge-threshold.service
 
-# Git Configuration
+
+# -------------------------
+# --- Git Configuration ---
+# -------------------------
 git config --global user.email "pedroivoal1@gmail.com"
 git config --global user.name "pedroivo1"
+
+
+# ---------------------
+# --- Download Apps ---
+# ---------------------
+sudo pacman -Syu $(cat apps.txt) --noconfirm --needed
+
+# Configure Okular
+kwriteconfig6 --file okularpartrc --group Shortcuts --key options_toggle_change_colors "Ctrl+R"
