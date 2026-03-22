@@ -38,7 +38,6 @@ sudo pacman -Syu $(cat apps.txt) --noconfirm --needed
 # ---------------------
 
 # Okular Configuration
-kwriteconfig6 --file okularpartrc --group Shortcuts --key options_toggle_change_colors "Ctrl+R"
 xdg-mime default org.kde.okular.desktop application/pdf
 
 # Fish Configuration
@@ -56,24 +55,22 @@ EOF
 # --- Symbolic Links ---
 # ----------------------
 
-# Claim ownership of the external drive
+# 1. Reivindicação de Posse
 sudo chown -R $USER:$USER /mnt/data
 
-# Define the core directories
-FOLDERS=("Documents" "Downloads" "Music" "Pictures" "Videos")
+# 2. Construção da Matriz na partição isolada
+mkdir -p /mnt/data/Documents
+mkdir -p /mnt/data/Downloads
+mkdir -p /mnt/data/Music
+mkdir -p /mnt/data/Pictures
+mkdir -p /mnt/data/Videos
 
-for folder in "${FOLDERS[@]}"; do
-    # 1. Create the permanent matrix on the data drive
-    mkdir -p "/mnt/data/$folder"
+# 3. Limpa-Trilhos: Remove as pastas padrões do sistema apenas se estiverem vazias
+rmdir ~/Documents ~/Downloads ~/Music ~/Pictures ~/Videos 2>/dev/null
 
-    # 2. Safely handle existing default system folders
-    if [ -d "$HOME/$folder" ] && [ ! -L "$HOME/$folder" ]; then
-        # rmdir is a safety lock: it will only delete the folder if it is 100% empty.
-        # If you have files there, it will leave them alone and print an error.
-        rmdir "$HOME/$folder" 2>/dev/null
-    fi
-
-    # 3. Establish or update the portal safely
-    # (-sfn forces the link and prevents nesting inside existing links)
-    ln -sfn "/mnt/data/$folder" "$HOME/$folder"
-done
+# 4. Ancoragem Perfeita e Blindada
+ln -sfn /mnt/data/Documents ~/Documents
+ln -sfn /mnt/data/Downloads ~/Downloads
+ln -sfn /mnt/data/Music ~/Music
+ln -sfn /mnt/data/Pictures ~/Pictures
+ln -sfn /mnt/data/Videos ~/Videos
