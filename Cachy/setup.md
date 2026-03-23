@@ -45,10 +45,12 @@ Upon returning to the system, execute the application and environment configurat
 1. Right click on task bar:
 2. Click `Add or Manage Widgets...`
 
-- Application Launcher
-- Digital Clock
-- Icons-Only Task Manager
-- System Tray
+| Widgets |
+| :--- |
+| Application Launcher |
+| Digital Clock |
+| Icons-Only Task Manager |
+| System Tray |
 
 ## Apps
 
