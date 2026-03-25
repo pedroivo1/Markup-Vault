@@ -2,6 +2,7 @@ brave-bin
 
 bitwarden
 wl-clipboard
+tmux
 
 libreoffice-still
 libreoffice-still-pt-br
