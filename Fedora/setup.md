@@ -1,25 +1,31 @@
-# Fedora Setup
+# Fedora Setup Guide
 
-## System
+## System Configuration
 
-### Update
+### System Update
+
+Refresh repositories and upgrade the system base:
 ```bash
 sudo dnf upgrade --refresh -y
 ```
 
-### Batery
+### Battery Charge Limit
+
+Retrieve your battery component information:
 ```bash
 ls /sys/class/power_supply/
 ls /sys/class/power_supply/BAT0/charge_control_end_threshold
 ```
 
+Create the `.service` file:
 ```bash
 sudo nano /etc/systemd/system/battery-limit.service
 ```
 
-```TOML
+Paste the following configuration into the file:
+```toml
 [Unit]
-Description=Estabelece o limite maximo de carga da bateria
+Description=Sets the maximum battery charge limit to 80 percent
 After=multi-user.target
 StartLimitBurst=0
 
@@ -32,74 +38,145 @@ ExecStart=/bin/bash -c 'echo 80 > /sys/class/power_supply/BAT0/charge_control_en
 WantedBy=multi-user.target
 ```
 
+Reload the systemd service manager:
 ```bash
-# Recarrega a lista de serviços do sistema
 sudo systemctl daemon-reload
+```
 
-# Habilita o serviço para a próxima inicialização e o inicia agora
+Enable the service to start automatically on boot:
+```bash
 sudo systemctl enable --now battery-limit.service
 ```
 
-## Apps
+## Applications
+
+### Batch Installation
+
+Install applications from predefined list, apps.txt, skipping any unavailable packages:
 ```bash
 sudo dnf install $(cat apps.txt) --skip-unavailable -y
 ```
 
+### GitHub Configuration
+
+#### Set global Git credentials.
+
+```bash
+git config --global user.name "pedroivo1"
+git config --global user.email "pedroivoal1@gmail.com"
+```
+
+#### Configure ssh handshake.
+
+```bash
+mkdir -p ~/.ssh
+nano ~/.ssh/config
+```
+
+```txt
+Host github.com
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/id_ed25519
+  AddKeysToAgent yes
+```
+
+```bash
+chmod 700 ~/.ssh
+chmod 600 ~/.ssh/config
+```
+
+
+### Flatpak & Bitwarden
+
+Add the Flathub repository and install the Bitwarden desktop application:
 ```bash
 flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 flatpak install flathub com.bitwarden.desktop -y
 ```
 
+> Open the application and log in with your email and password.
 
-## Browser
+### Brave Browser
+
+Install the required core plugins, add the Brave repository, and install the browser:
 ```bash
 sudo dnf install dnf-plugins-core
-# Gemini alega que precisa desse comando, mas não está no site do brave
-sudo rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
+
+# Optional fallback: Manually import the GPG key if the repository addition requires it
+# sudo rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
 
 sudo dnf config-manager addrepo --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
-
-sudo dnf install brave-browser
+sudo dnf install brave-browser -y
 ```
 
-add bitwarden
-make it the default password manager
+Extensions:
+- bitwarden [make it default password manager]
 
 
-## Links Simbólicos
+## Storage and Symbolic Links
+
+### Partition Mounting
+
+Identify drive's name:
 ```bash
-# pegue o nome do disco em que a partição de dados está instalada
 lsblk
+```
 
-sudo blkid <partição> # /dev/nvme0n1p2
+Identify partition UUID:
+```bash
+sudo blkid <partition> # /dev/nvme0n1p2
+```
+
+Create the mount point and open the file system table:
+```bash
 sudo mkdir -p /mnt/data
 sudo nano /etc/fstab
 ```
 
-paste:
-```bash
-# Adicionar a seguinte linha (substituindo o UUID se necessário):
+Append the following line using the UUID of `sudo blkid <partition>` to the end of the file (this content is representative only):
+> e.g.: UUID=522cf738-6361-4162-a895-abd155df2674  /mnt/data  ext4  defaults  0  2
+
+```toml
+#
+# /etc/fstab
+# Created by anaconda on Sun Apr  5 01:09:09 2026
+#
+# Accessible filesystems, by reference, are maintained under '/dev/disk/'.
+# See man pages fstab(5), findfs(8), mount(8) and/or blkid(8) for more info.
+#
+# After editing this file, run 'systemctl daemon-reload' to update systemd
+# units generated from this file.
+#
+UUID=374641fb-0100-4f11-9f2e-5725125a1031 / ext4 defaults 1 1
+UUID=AB52-47FE /boot/efi vfat umask=0077,shortname=winnt 0 2
 UUID=522cf738-6361-4162-a895-abd155df2674  /mnt/data  ext4  defaults  0  2
 ```
 
+Reload the daemon and mount the drive immediately:
 ```bash
 sudo systemctl daemon-reload
 sudo mount -a
+```
 
-# Transferência da posse do disco para o usuário atual
+### Directory Redirection
+
+Execute the following block to establish the definitive symbolic links:
+```bash
+# Transfer ownership of the mounted drive to the current user
 sudo chown -R $USER:$USER /mnt/data
 
-# Criação da infraestrutura de pastas no disco secundário
+# Create the directory structure on the secondary drive
 mkdir -p /mnt/data/Documents
 mkdir -p /mnt/data/Downloads
 mkdir -p /mnt/data/Music
 mkdir -p /mnt/data/Pictures
 mkdir -p /mnt/data/Videos
 
-# Remoção dos diretórios originais vazios na pasta do usuário
+# Remove the original empty directories from the user's home folder
 rmdir ~/Documents ~/Downloads ~/Music ~/Pictures ~/Videos 2>/dev/null
 
-# Criação das pontes de ligação definitivas
+# Establish the definitive symbolic links
 ln -sfn /mnt/data/Documents ~/Documents
 ln -sfn /mnt/data/Downloads ~/Downloads
 ln -sfn /mnt/data/Music ~/Music
