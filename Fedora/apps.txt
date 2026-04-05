@@ -1,0 +1,10 @@
+kate
+kclock
+kcalc
+kwrite
+kio-admin
+okular
+
+bitwarden
+
+git
