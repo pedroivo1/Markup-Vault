@@ -50,7 +50,7 @@ Rate Arch Linux mirrors globally. We use a background ping to keep the Realtek a
 
 ```bash
 ping -i 0.2 1.1.1.1 > /dev/null 2>&1 &
-PING_PID=$!
+set PING_PID $last_pid
 sleep 1
 sudo cachyos-rate-mirrors
 kill $PING_PID
@@ -65,14 +65,14 @@ Prevent AMD-Vi from blocking the Realtek adapter's memory access by injecting th
 Run the following block. It will check if the rule exists, and if not, inject it and rebuild the system image/bootloader:
 
 ```bash
-if ! grep -q "iommu=pt" /etc/kernel/cmdline; then
+if not grep -q "iommu=pt" /etc/kernel/cmdline
     echo "Injecting IOMMU Passthrough rule into Kernel command line..."
     sudo sed -i 's/$/ iommu=pt/' /etc/kernel/cmdline
     sudo mkinitcpio -P
     sudo limine-update
 else
     echo "IOMMU Passthrough is already configured."
-fi
+end
 ```
 
 ## System Configuration
@@ -94,7 +94,7 @@ ls /sys/class/power_supply/<battery_name>/charge_control_end_threshold
 
 Create the `.service` file:
 ```bash
-sudo nano /etc/systemd/system/battery-limit.service
+sudo nano /etc/systemd/system/battery-charge-threshold.service
 ```
 
 Set the maximum battery charge threshold to 80%.
@@ -146,7 +146,7 @@ sudo blkid <partition> # e.g., sudo blkid /dev/nvme0n1p2
 Create the mount point and open the file system table:
 
 ```bash
-sudo mkdir -p /mnt/data
+sudo mkdir -p /data
 sudo nano /etc/fstab
 ```
 
@@ -155,7 +155,7 @@ Append your partition to the end of the file. (Replace the UUID below with yours
 > replace `<your-partition-uuid>` for id founded, e.g. `UUID=522cf738-6361-4162-a895-abd155df2674`.
 
 ```bash
-UUID=<your-partition-uuid>  /mnt/data  ext4  defaults  0  2
+UUID=<your-partition-uuid>  /data  ext4  defaults  0  2
 ```
 
 Reload the daemon and mount the drive:
@@ -171,24 +171,24 @@ Transfer ownership and establish symbolic links for your user folders:
 
 ```bash
 # Transfer ownership of the mounted drive to the current user
-sudo chown -R $USER:$USER /mnt/data
+sudo chown -R $USER:$USER /data
 
 # Create the directory structure on the secondary drive
-mkdir -p /mnt/data/Documents
-mkdir -p /mnt/data/Downloads
-mkdir -p /mnt/data/Music
-mkdir -p /mnt/data/Pictures
-mkdir -p /mnt/data/Videos
+mkdir -p /data/Documents
+mkdir -p /data/Downloads
+mkdir -p /data/Music
+mkdir -p /data/Pictures
+mkdir -p /data/Videos
 
 # Remove the original empty directories from the user's home folder
 rmdir ~/Documents ~/Downloads ~/Music ~/Pictures ~/Videos 2>/dev/null
 
 # Establish the definitive symbolic links
-ln -sfn /mnt/data/Documents ~/Documents
-ln -sfn /mnt/data/Downloads ~/Downloads
-ln -sfn /mnt/data/Music ~/Music
-ln -sfn /mnt/data/Pictures ~/Pictures
-ln -sfn /mnt/data/Videos ~/Videos
+ln -sfn /data/Documents ~/Documents
+ln -sfn /data/Downloads ~/Downloads
+ln -sfn /data/Music ~/Music
+ln -sfn /data/Pictures ~/Pictures
+ln -sfn /data/Videos ~/Videos
 ```
 
 ## Applications & Environment Setup
