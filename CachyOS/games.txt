@@ -3,3 +3,5 @@ nethack
 nudoku
 2048-cli
 mathomatic
+
+- Por uma parte onde eu descubro como os meus hardweres de bateria funcionam.

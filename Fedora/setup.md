@@ -66,7 +66,7 @@ git config --global user.name "pedroivo1"
 git config --global user.email "pedroivoal1@gmail.com"
 ```
 
-#### Configure ssh handshake.
+#### Create SSH key.
 
 ```bash
 mkdir -p ~/.ssh
@@ -81,9 +81,45 @@ Host github.com
   AddKeysToAgent yes
 ```
 
+Secure the SSH directory and config file with the strict permissions required by SSH:
+
 ```bash
 chmod 700 ~/.ssh
 chmod 600 ~/.ssh/config
+```
+
+#### Add the Key to GitHub
+
+Copy your new public key directly to your clipboard:
+
+```bash
+wl-copy < ~/.ssh/id_ed25519.pub
+```
+
+Link it to your account:
+
+1. Go to GitHub.com and log in.
+2. Click your profile photo in the top right corner and select Settings.
+3. In the left sidebar, click SSH and GPG keys.
+4. Click the green New SSH key button.
+5. Give it a title (e.g., "CachyOS Setup").
+6. Leave the key type as "Authentication Key".
+7. Paste your key into the "Key" field and click Add SSH key.
+
+Test your connection to ensure everything is working:
+
+```bash
+ssh -T git@github.com
+```
+
+> (Type yes if it asks to verify the fingerprint. You should see a success message: "Hi pedroivo1! You've successfully authenticated...")
+
+```bash
+
+```
+
+```bash
+
 ```
 
 

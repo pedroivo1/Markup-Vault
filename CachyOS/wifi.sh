@@ -54,3 +54,9 @@ if ! grep -q "iommu=pt" /etc/kernel/cmdline; then
 else
     echo "IOMMU Passthrough is already configured."
 fi
+
+
+# ----------------------------------------------
+# --- 9. Antenna Selection Parameterization ---
+# ----------------------------------------------
+echo "options rtw88_core disable_aspm=y disable_lps_deep=y ant_sel=2" | sudo tee /etc/modprobe.d/rtw88.conf
