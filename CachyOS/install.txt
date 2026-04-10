@@ -1,10 +1,12 @@
 brave-bin
 
 bitwarden
+
 wl-clipboard
 
 libreoffice-still
 libreoffice-still-pt-br
 
+dolphin
 kcalc
 okular

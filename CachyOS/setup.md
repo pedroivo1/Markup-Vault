@@ -195,10 +195,16 @@ ln -sfn /data/Videos ~/Videos
 
 ### Batch Installation
 
-Install applications from your predefined list (apps.txt) while upgrading the system:
+Install applications listed on install.txt and upgrade the system:
 
 ```bash
-sudo pacman -Syu $(cat apps.txt) --noconfirm --needed
+sudo pacman -Syu $(awk 'NF' install.txt) --noconfirm --needed
+```
+
+Uninstall applications listed on uninstall.txt:
+
+```bash
+sudo pacman -Rns $(awk 'NF' uninstall.txt) --noconfirm
 ```
 
 ### Git Configuration
@@ -238,6 +244,12 @@ chmod 700 ~/.ssh
 chmod 600 ~/.ssh/config
 ```
 
+Generate SSH key:
+
+```bash
+ssh-keygen -t ed25519 -C "pedroivoal1@gmail.com"
+```
+
 #### Add the Key to GitHub
 
 Copy your new public key directly to your clipboard:
@@ -260,17 +272,48 @@ Test your connection to ensure everything is working:
 
 ```bash
 ssh -T git@github.com
+# Type: yes
 ```
 
-> (Type yes if it asks to verify the fingerprint. You should see a success message: "Hi pedroivo1! You've successfully authenticated...")
+> You should see a success message: "Hi pedroivo1! You've successfully authenticated...")
+
+### Brave
+
+1. Open
+2. Click: `Set Brave as default browser`
+3. Click: `Next`
+4. Click: `Maybe later`
+5. Unmark every thing
+6. Click: `Finish`
+7. Scroll down.
+8. Click: `No thanks`
+
+#### Bitwarden
+
+Add bit warden extension.
+
+1. Click: `Extensions`
+2. Click: `More options`
+3. Enable: `Pin to toolbar`
+
+Configure Bitwarden
+
+1. Click: `Bitwarden`
+2. Click: `Login`
+3. Type: <email>
+4. Mark: Remember email
+5. Click: `Continue`
+6. Enter: <password>
+7. Click: `Log in`
+
+8. Settings->Autofill->Turn Off Chrome Autofill, Make Bitwarden your default password manager
 
 ## Desktop Environment (KDE Plasma)
 
 ### Panel Configuration
 
-Right-click on the taskbar.
-
-Click Show Panel Configuration.
+1. Right-click on the taskbar
+2. Click: `Show Panel Configuration`
 
 | Parameter | Value |
 | :--- | :--- |
@@ -285,15 +328,37 @@ Click Show Panel Configuration.
 
 ### Panel Widgets
 
-1. Right-click on the taskbar.
-2. Click Add or **Manage Widgets...**
+1. Right-click on the taskbar
+2. Click: `Add or Manage Widgets...`
+3. Select: `Running`
 
-Add the following widgets:
+Keep only following widgets:
 
 - Application Launcher
 - Digital Clock
 - Icons-Only Task Manager
 - System Tray
+
+### Task Manager Apps
+
+`Unping From Task Manager` all apps.
+
+### System Tray
+
+1. Right-click on System Tray
+2. Click: `Configure System Tray...`
+
+Set as `Never show (disabled)` on
+
+Application Status:
+- Arch-Update
+- Get Plasma Browser Integration
+- Kate Sessions
+
+Hardware Control:
+- Audio Volume
+- Bluetooth
+- Brightness and Color
 
 ### Okular Configuration
 
