@@ -1,6 +1,6 @@
 # CachyOS Setup Guide
 
-This documentation contains post-installation network, system, and application configuration for CachyOS.
+Commands for fish shell.
 
 ## Network & Hardware Optimization
 
@@ -65,14 +65,10 @@ Prevent AMD-Vi from blocking the Realtek adapter's memory access by injecting th
 Run the following block. It will check if the rule exists, and if not, inject it and rebuild the system image/bootloader:
 
 ```bash
-if not grep -q "iommu=pt" /etc/kernel/cmdline
-    echo "Injecting IOMMU Passthrough rule into Kernel command line..."
-    sudo sed -i 's/$/ iommu=pt/' /etc/kernel/cmdline
-    sudo mkinitcpio -P
-    sudo limine-update
-else
-    echo "IOMMU Passthrough is already configured."
-end
+sudo mkdir -p /etc/cmdline.d/
+echo "iommu=pt" | sudo tee /etc/cmdline.d/iommu.conf > /dev/null
+sudo mkinitcpio -P
+sudo limine-update
 ```
 
 ## System Configuration
@@ -198,13 +194,26 @@ ln -sfn /data/Videos ~/Videos
 Install applications listed on install.txt and upgrade the system:
 
 ```bash
-sudo pacman -Syu $(awk 'NF' install.txt) --noconfirm --needed
+sudo pacman -Syu (awk 'NF' install.txt) --noconfirm --needed
 ```
 
 Uninstall applications listed on uninstall.txt:
 
 ```bash
-sudo pacman -Rns $(awk 'NF' uninstall.txt) --noconfirm
+sudo pacman -Rns (awk 'NF' uninstall.txt) --noconfirm
+```
+
+### Default Apps
+
+Paste this on `~/.config/mimeapps.list`:
+
+```toml
+[Default Applications]
+x-scheme-handler/bitwarden=bitwarden.desktop
+x-scheme-handler/http=brave-browser.desktop
+x-scheme-handler/https=brave-browser.desktop
+text/html=brave-browser.desktop
+application/pdf=org.kde.okular.desktop
 ```
 
 ### Git Configuration
