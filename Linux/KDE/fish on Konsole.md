@@ -2,7 +2,7 @@
 ### Install fish & tools
 ```sh
 sudo apt update
-sudo apt install -y fish fastfetch
+sudo apt install -y fish
 ```
 
 ```sh
@@ -47,17 +47,20 @@ nano ~/.config/fish/config.fish
 (Note: Use fish syntax, not toml for this file)
 
 ```toml
-# Initializes Starship (CachyOS Prompt)
-starship init fish | source
-
-# Replaces the default Fish greeting with Fastfetch
-function fish_greeting
-    fastfetch
+if status is-interactive
+    # Commands to run in interactive sessions can go here
 end
 
-# (Optional) Practical aliases for everyday use
+function fish_greeting
+
+end
+
+
+starship init fish | source
+
 alias ls="ls --color=auto"
 alias update="sudo apt update && sudo apt upgrade"
+
 ```
 
 3. Apply the CachyOS/Nerd Font preset to Starship:

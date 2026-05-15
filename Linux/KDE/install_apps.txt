@@ -1,0 +1,8 @@
+filelight
+kclock
+kcolorchooser
+kwrite
+
+fish
+
+eza
