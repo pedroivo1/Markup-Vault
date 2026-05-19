@@ -2,7 +2,11 @@ filelight
 kclock
 kcolorchooser
 kwrite
+ocular
+elisa
+haruna
 
 fish
-
 eza
+curl
+

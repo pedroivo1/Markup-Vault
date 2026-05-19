@@ -60,7 +60,6 @@ starship init fish | source
 
 alias ls="ls --color=auto"
 alias update="sudo apt update && sudo apt upgrade"
-
 ```
 
 3. Apply the CachyOS/Nerd Font preset to Starship:
