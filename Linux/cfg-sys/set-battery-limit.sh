@@ -1,23 +1,17 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-# Exit immediately if a command exits with a non-zero status,
-# treat unset variables as an error, and catch pipeline failures.
 set -euo pipefail
 
-# --- Colors ---
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 YELLOW='\033[0;33m'
-NC='\033[0m' # No Color
+NC='\033[0m'
 
-# --- Global Variables ---
 LIMIT="${1:-80}"
 BATTERY=""
 THRESHOLD_FILE=""
 SERVICE_FILE="/etc/systemd/system/battery-charge-threshold.service"
-
-# --- Functions ---
 
 check_root_privileges() {
     if [[ $EUID -ne 0 ]]; then
@@ -89,5 +83,4 @@ main() {
     enable_service
 }
 
-# --- Execution ---
 main
