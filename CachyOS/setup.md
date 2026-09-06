@@ -1,77 +1,80 @@
-# CachyOS Setup Guide
+# CachyOS Setup Guide (Basic)
 
 Commands for fish shell.
 
-## Network & Hardware Optimization
+> Advanced/optional Wi-Fi and network tuning was moved to `network-optimization.md` — run it separately if needed.
 
-### Realtek Wi-Fi Stabilization & IWD
+## 1. Git & SSH Configuration
 
-Disable Wi-Fi power saving in NetworkManager and configure kernel module parameters to disable ASPM and deep sleep states for the Realtek adapter:
+### Global Git Credentials
 
-```bash
-sudo mkdir -p /etc/NetworkManager/conf.d/
-echo -e "[connection]\nwifi.powersave = 2" | sudo tee /etc/NetworkManager/conf.d/default-wifi-powersave-on.conf
-echo "options rtw88_core disable_aspm=y disable_lps_deep=y ant_sel=2" | sudo tee /etc/modprobe.d/rtw88.conf
-```
-
-Install the high-performance network engine (IWD) and configure NetworkManager to use it as the backend:
+Set your global Git credentials:
 
 ```bash
-sudo pacman -S iwd --noconfirm --needed
-echo -e "[device]\nwifi.backend=iwd" | sudo tee /etc/NetworkManager/conf.d/wifi_backend.conf
+git config --global user.name "pedroivo1"
+git config --global user.email "pedroivoal1@gmail.com"
 ```
 
-Disable MAC randomization and IPv6 to stabilize the connection:
+### Configure SSH key
+
+Create the SSH directory and configuration file:
 
 ```bash
-echo -e "[device]\nwifi.scan-rand-mac-address=no" | sudo tee /etc/NetworkManager/conf.d/disable-random-mac.conf
-echo -e "[connection]\nipv6.method=disabled" | sudo tee /etc/NetworkManager/conf.d/disable-ipv6.conf
+mkdir -p ~/.ssh
+nano ~/.ssh/config
 ```
 
-Enable the IWD service:
+Paste into the file:
 
 ```bash
-sudo systemctl enable --now iwd
+Host github.com
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/id_ed25519
+  AddKeysToAgent yes
 ```
 
-### Regulatory Domain Unlock (BR)
-
-Unlock the maximum antenna transmission power and local 5GHz channels for Brazil:
+Secure the SSH directory and config file with the correct permissions:
 
 ```bash
-sudo sed -i '/^WIRELESS_REGDOM=/d' /etc/conf.d/wireless-regdom
-echo 'WIRELESS_REGDOM="BR"' | sudo tee -a /etc/conf.d/wireless-regdom > /dev/null
-sudo iw reg set BR
+chmod 700 ~/.ssh
+chmod 600 ~/.ssh/config
 ```
 
-### Optimize Arch Mirrors
-
-Rate Arch Linux mirrors globally. We use a background ping to keep the Realtek adapter "warm" to prevent drops during the mirror check:
+Generate SSH key:
 
 ```bash
-ping -i 0.2 1.1.1.1 > /dev/null 2>&1 &
-set PING_PID $last_pid
-sleep 1
-sudo cachyos-rate-mirrors
-kill $PING_PID
+ssh-keygen -t ed25519 -C "pedroivoal1@gmail.com"
 ```
 
-> Note: Every time you change your geographic location significantly (e.g., relocating from Brazil to Canada), you should re-run the cachyos-rate-mirrors step so the system updates to faster regional servers.
+### Add the Key to GitHub
 
-AMD Processor Memory Bypass (IOMMU)
-
-Prevent AMD-Vi from blocking the Realtek adapter's memory access by injecting the IOMMU Passthrough rule into the Kernel command line.
-
-Run the following block. It will check if the rule exists, and if not, inject it and rebuild the system image/bootloader:
+Copy your new public key directly to your clipboard:
 
 ```bash
-sudo mkdir -p /etc/cmdline.d/
-echo "iommu=pt" | sudo tee /etc/cmdline.d/iommu.conf > /dev/null
-sudo mkinitcpio -P
-sudo limine-update
+wl-copy < ~/.ssh/id_ed25519.pub
 ```
 
-## System Configuration
+Link it to your account:
+
+1. Go to GitHub.com and log in.
+2. Click your profile photo in the top right corner and select Settings.
+3. In the left sidebar, click SSH and GPG keys.
+4. Click the green New SSH key button.
+5. Give it a title (e.g., "CachyOS Setup").
+6. Leave the key type as "Authentication Key".
+7. Paste your key into the "Key" field and click Add SSH key.
+
+Test your connection to ensure everything is working:
+
+```bash
+ssh -T git@github.com
+# Type: yes
+```
+
+> You should see a success message: "Hi pedroivo1! You've successfully authenticated...")
+
+## 2. Battery & SSD
 
 ### Battery Charge Limit
 
@@ -123,7 +126,7 @@ Enable weekly SSD trim to maintain performance and lifespan:
 sudo systemctl enable --now fstrim.timer
 ```
 
-## Storage and Symbolic Links
+## 3. Storage and Symbolic Links
 
 ### Partition Mounting
 
@@ -187,9 +190,7 @@ ln -sfn /data/Pictures ~/Pictures
 ln -sfn /data/Videos ~/Videos
 ```
 
-## Applications & Environment Setup
-
-### Batch Installation
+## 4. Batch Package Installation
 
 Install applications listed on install.txt and upgrade the system:
 
@@ -203,7 +204,27 @@ Uninstall applications listed on uninstall.txt:
 sudo pacman -Rns (awk 'NF' uninstall.txt) --noconfirm
 ```
 
-### Default Apps
+## 5. Dotfiles Restore
+
+Install GNU Stow and clone your dotfiles repo:
+
+```bash
+sudo pacman -S stow git --noconfirm --needed
+git clone git@github.com:pedroivo1/dotfiles.git ~/dotfiles
+```
+
+Symlink each package into `$HOME` (skip any package you don't want on this machine):
+
+```bash
+cd ~/dotfiles
+stow -t ~ alacritty fish herdr kde kitty lazivim vscodium
+```
+
+> `stow -D -t ~ <package>` removes a package's symlinks; `stow -R -t ~ <package>` re-links after edits.
+
+> Note: clone the dotfiles repo *before* running the SSH key steps above only if you already have a key set up on GitHub for this machine; otherwise clone over HTTPS first and switch the remote to SSH afterward (`git remote set-url origin git@github.com:pedroivo1/dotfiles.git`).
+
+## 6. Default Apps
 
 Paste this on `~/.config/mimeapps.list`:
 
@@ -216,76 +237,6 @@ text/html=brave-browser.desktop
 application/pdf=org.kde.okular.desktop
 ```
 
-### Git Configuration
-
-#### Global Git Credentials:
-
-Set your global Git credentials:
-
-```bash
-git config --global user.name "pedroivo1"
-git config --global user.email "pedroivoal1@gmail.com"
-```
-
-#### Configure SSH key
-
-Create the SSH directory and configuration file:
-
-```bash
-mkdir -p ~/.ssh
-nano ~/.ssh/config
-```
-
-Paste into the file:
-
-```bash
-Host github.com
-  HostName github.com
-  User git
-  IdentityFile ~/.ssh/id_ed25519
-  AddKeysToAgent yes
-```
-
-Secure the SSH directory and config file with the correct permissions:
-
-```bash
-chmod 700 ~/.ssh
-chmod 600 ~/.ssh/config
-```
-
-Generate SSH key:
-
-```bash
-ssh-keygen -t ed25519 -C "pedroivoal1@gmail.com"
-```
-
-#### Add the Key to GitHub
-
-Copy your new public key directly to your clipboard:
-
-```bash
-wl-copy < ~/.ssh/id_ed25519.pub
-```
-
-Link it to your account:
-
-1. Go to GitHub.com and log in.
-2. Click your profile photo in the top right corner and select Settings.
-3. In the left sidebar, click SSH and GPG keys.
-4. Click the green New SSH key button.
-5. Give it a title (e.g., "CachyOS Setup").
-6. Leave the key type as "Authentication Key".
-7. Paste your key into the "Key" field and click Add SSH key.
-
-Test your connection to ensure everything is working:
-
-```bash
-ssh -T git@github.com
-# Type: yes
-```
-
-> You should see a success message: "Hi pedroivo1! You've successfully authenticated...")
-
 ### Brave
 
 1. Open
@@ -297,7 +248,7 @@ ssh -T git@github.com
 7. Scroll down.
 8. Click: `No thanks`
 
-#### Bitwarden
+### Bitwarden
 
 Add bit warden extension.
 
@@ -317,7 +268,7 @@ Configure Bitwarden
 
 8. Settings->Autofill->Turn Off Chrome Autofill, Make Bitwarden your default password manager
 
-## Desktop Environment (KDE Plasma)
+## 7. Desktop Environment (KDE Plasma)
 
 ### Panel Configuration
 
@@ -384,3 +335,16 @@ Map the "Invert Colors" toggle:
 3. Search for: Change Colors
 4. Click the Shortcut column, select Custom, and input: Ctrl + R
 5. Apply and exit.
+
+## 8. Reboot and Verify
+
+```bash
+sudo reboot
+```
+
+After reboot, confirm:
+
+- `/data` is mounted and `~/Documents`, `~/Downloads`, `~/Music`, `~/Pictures`, `~/Videos` resolve correctly.
+- Dotfiles symlinks are in place (`ls -la ~/.config/fish`, `~/.config/kitty`, etc.).
+- Battery threshold service is active: `systemctl status battery-charge-threshold.service`.
+- `fstrim.timer` is enabled: `systemctl status fstrim.timer`.

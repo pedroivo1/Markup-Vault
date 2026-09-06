@@ -4,6 +4,8 @@ bitwarden
 
 wl-clipboard
 
+stow
+
 libreoffice-still
 libreoffice-still-pt-br
 
