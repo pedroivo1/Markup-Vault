@@ -7,6 +7,7 @@ mkdir -p /data/Downloads
 mkdir -p /data/Music
 mkdir -p /data/Pictures
 mkdir -p /data/Videos
+mkdir -p /data/Apps
 
 # Remove the original empty directories from the user's home folder
 rmdir ~/Documents ~/Downloads ~/Music ~/Pictures ~/Videos 2>/dev/null
@@ -17,3 +18,4 @@ ln -sfn /data/Downloads ~/Downloads
 ln -sfn /data/Music ~/Music
 ln -sfn /data/Pictures ~/Pictures
 ln -sfn /data/Videos ~/Videos
+ln -sfn /data/Apps ~/Apps
